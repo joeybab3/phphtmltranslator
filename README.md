@@ -10,7 +10,7 @@ It uses a SQL database to cache previously translated tokens so running html thr
 
 # Setup
 
-`composer require joeybab3/phphtmltranslater`
+`composer require joeybab3/phphtmltranslator`
 
 Once installed run the following PHP somewhere:
 ```
