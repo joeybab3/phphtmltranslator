@@ -1,0 +1,23 @@
+{
+    "name": "joeybab3/phphtmltranslator",
+    "type": "library",
+    "description": "PHP HTML Translator",
+    "keywords": ["composer-library", "php", "google-translate", "wrapper"],
+    "homepage": "https://joeybabcock.me",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joey Babcock",
+            "email": "joey_babcock@yahoo.com",
+            "homepage": "https://joeybabcock.me",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"Joeybab3\\HTMLTranslator\\": "src/"}
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "stichoza/google-translate-php": "^5.1"
+    }
+}
