@@ -13,7 +13,7 @@ It uses a SQL database to cache previously translated tokens so running html thr
 `composer require joeybab3/phphtmltranslator`
 
 Once installed run the following PHP somewhere:
-```
+```php
 <?php
 require_once('vendor/autoload.php');
 use Joeybab3\HTMLTranslator\HTMLTranslator as Translator;
@@ -31,7 +31,7 @@ Translator::createTranslationCacheTable($db);
 ```
 
 This will create the cache table. Alternatively, create the table yourself:
-```
+```sql
 CREATE TABLE `translations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `text` text,
@@ -42,7 +42,7 @@ CREATE TABLE `translations` (
 ```
 
 Then you can use it to translate HTML:
-```
+```php
 <?php
 require_once('vendor/autoload.php');
 use Joeybab3\HTMLTranslator\HTMLTranslator as Translator;
