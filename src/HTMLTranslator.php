@@ -7,6 +7,7 @@
     * @param $lang - Language to translate to
     *
     * Created: Joey Babcock - @joeybab3 - 2023-10
+    * Last Updated: Joey Babcock - @joeybab3 - 2024-11
     */
 
     namespace Joeybab3\HTMLTranslator;
@@ -18,11 +19,11 @@
     use PDO;
 
     class HTMLTranslator {
-        private $lang;
+        private $dest_lang; // destination language
         private $dbh;
 
         public function __construct($db, $lang = "en") {
-            $this->lang = $lang;
+            $this->setDestinationLanguage($lang);
             $this->dbh = $db;
         }
 
@@ -38,16 +39,20 @@
             $stmt->execute();
         }
 
-        public function setLang($lang) {
-            $this->lang = $lang;
+        public function setDestinationLanguage($lang) {
+            $this->dest_lang = $lang;
         }
 
-        public function getLang() {
-            return $this->lang;
+        public function getDestinationLanguage() {
+            return $this->dest_lang;
         }
 
         public function translate($text) {
-            if($this->lang == "en") {
+            if(empty($text)) {
+                return $text;
+            }
+
+            if($this->getDestinationLanguage() == "en") {
                 return $text;
             }
 
@@ -70,7 +75,7 @@
             if ($result) {
                 return $result;
             } else {
-                $tr = new GoogleTranslate($this->lang);
+                $tr = new GoogleTranslate($this->getDestinationLanguage());
                 $result = $tr->translate($text);
                 sleep(3); // Google Translate API rate limiting to avoid getting banned (maybe)
                 $this->addCacheEntry(strtolower(trim($text, " \t\n\r\0\x0B\xc2\xa0")), $result);
@@ -81,7 +86,7 @@
         public function checkCache($text) {
             $sql = "SELECT `result` FROM `translations` WHERE `text` = :text AND `lang` = :lang";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->execute(array(':text' => $text, ':lang' => $this->lang));
+            $stmt->execute(array(':text' => $text, ':lang' => $this->getDestinationLanguage()));
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($result) {
                 return $result['result'];
@@ -98,7 +103,8 @@
 
         public function tokenizedTranslate($string) {
             $old_string = $string;
-            $new_string = mb_convert_encoding($string, 'HTML-ENTITIES', "UTF-8");
+            $new_string = htmlentities($string, ENT_COMPAT, 'utf-8', false);
+            $new_string = htmlspecialchars_decode(mb_convert_encoding($new_string, "UTF-8", mb_detect_encoding($new_string)));
             $new_string = str_replace(chr(194) . chr(160), ' ', $new_string );
             $new_string = preg_replace('/\xc2\xa0/', '', $new_string);
 
