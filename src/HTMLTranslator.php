@@ -1,6 +1,6 @@
 <?php
     /*
-    * HTML Translater
+    * HTML Translator
     * Translates HTML content using Google Translate via Stichoza's GoogleTranslate library
     *
     * @param $db - Database handle
@@ -9,11 +9,15 @@
     * Created: Joey Babcock - @joeybab3 - 2023-10
     */
 
-    namespace Joeybab3\HTMLTranslater;
+    namespace Joeybab3\HTMLTranslator;
 
     use Stichoza\GoogleTranslate\GoogleTranslate;
 
-    class HTMLTranslater {
+    use DOMDocument;
+    use DOMXPath;
+    use PDO;
+
+    class HTMLTranslator {
         private $lang;
         private $dbh;
 
