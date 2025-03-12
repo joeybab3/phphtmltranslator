@@ -98,7 +98,7 @@
         public function addCacheEntry($text, $result) {
             $sql = "INSERT INTO `translations` (`text`, `lang`, `result`) VALUES (:text, :lang, :result)";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->execute(array(':text' => $text, ':lang' => $this->lang, ':result' => $result));
+            $stmt->execute(array(':text' => $text, ':lang' => $this->getDestinationLanguage(), ':result' => $result));
         }
 
         public function tokenizedTranslate($string) {
